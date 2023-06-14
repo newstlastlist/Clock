@@ -25,7 +25,7 @@ public class ClockPresenter : MonoBehaviour
     private void Start()
     {
         _clock.GetCurrentTimeAsObservable()
-            .Subscribe(time => _clockView.Display(time))
+            .Subscribe(time => _clockView.DisplayTime(time))
             .AddTo(_disposables);
     }
 }

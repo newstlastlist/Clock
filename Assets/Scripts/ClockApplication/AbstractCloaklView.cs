@@ -3,5 +3,5 @@ using UnityEngine;
 
 public abstract class AbstractCloaklView : MonoBehaviour
 {
-    public abstract void Display(DateTime time);
+    public abstract void DisplayTime(DateTime time);
 }

@@ -6,7 +6,7 @@ public class ClockView : AbstractCloaklView
 {
     [SerializeField] private TextMeshProUGUI _timeTmpro;
     
-    public override void Display(DateTime time)
+    public override void DisplayTime(DateTime time)
     {
         var hour = FormatDigit(time.Hour);
         var min = FormatDigit(time.Minute);
