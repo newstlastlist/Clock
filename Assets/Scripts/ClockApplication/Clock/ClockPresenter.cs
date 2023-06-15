@@ -1,31 +1,16 @@
 using UniRx;
 using UnityEngine;
-using Zenject;
 
-public class ClockPresenter : MonoBehaviour
+public class ClockPresenter : AbstractPresenter
 {
-    [SerializeField] private AbstractCloaklView _clockView;
+    [SerializeField] private AbstractClocklView _clockView;
     
-    private ClockModel _clock;
-    
-    private CompositeDisposable _disposables = new CompositeDisposable();
-
-    public AbstractCloaklView CloackView
-    {
-        get => _clockView;
-        set => _clockView = value;
-    }
-
-    [Inject]
-    public void Construct(ClockModel clock)
-    {
-        _clock = clock;
-    }
+    [SerializeField] private ClockModel _clock;
 
     private void Start()
     {
         _clock.GetCurrentTimeAsObservable()
-            .Subscribe(time => _clockView.DisplayTime(time))
+            .Subscribe(time => _clockView.DisplayTimeDateTime(time))
             .AddTo(_disposables);
     }
 }

@@ -1,29 +1,27 @@
-using System;
-using TMPro;
 using UnityEngine;
 
-public class ClockView : AbstractCloaklView
+public class ClockView : AbstractClocklView
 {
-    [SerializeField] private TextMeshProUGUI _timeTmpro;
-    
-    public override void DisplayTime(DateTime time)
+    [SerializeField] private RectTransform _clockRect;
+    [SerializeField] private RectTransform _bottomPos;
+    [SerializeField] private RectTransform _defaultPos;
+
+    public void MoveToDefaultPos()
     {
-        var hour = FormatDigit(time.Hour);
-        var min = FormatDigit(time.Minute);
-        var sec = FormatDigit(time.Second);
-        
-        _timeTmpro.text = String.Format("{0}:{1}:{2}", hour, min, sec);
+        MoveToPos(_defaultPos);
     }
 
-    private string FormatDigit(int digit)
+    public void MoveToBottomPos()
     {
-        if (digit < 10)
-        {
-            return "0" + digit.ToString();
-        }
-        else
-        {
-            return digit.ToString();
-        }
+        MoveToPos(_bottomPos);
     }
+
+    private void MoveToPos(RectTransform target)
+    {
+        _clockRect.anchorMax = target.anchorMax;
+        _clockRect.anchorMin = target.anchorMin;
+        _clockRect.localPosition = target.localPosition;
+        _clockRect.localScale = target.localScale;
+    }
+    
 }

@@ -2,12 +2,9 @@ using System;
 using UniRx;
 using UnityEngine;
 
-public class ClockModel : MonoBehaviour
+public class ClockModel : AbstractModel
 {
     private ReactiveProperty<DateTime> _currentTime = new ReactiveProperty<DateTime>(DateTime.Now);
-
-    private CompositeDisposable _disposables = new CompositeDisposable();
-
     private void Start()
     {
         _currentTime.Value = DateTime.Now;
@@ -20,5 +17,6 @@ public class ClockModel : MonoBehaviour
     {
         return _currentTime;
     }
-    
+
+   
 }
