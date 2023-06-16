@@ -15,7 +15,16 @@ public abstract class AbstractClocklView : MonoBehaviour
     {
         FormatAndDisplay(time.Hours, time.Minutes, time.Seconds);
     }
+    public virtual void DisplayDigit(int digit)
+    {
+        FormatAndDisplay(digit);
+    }
+    private void FormatAndDisplay(int digit)
+    {
+        var d = Utils.FormatDigit(digit);
 
+        _timeTmpro.text = String.Format("{0}", d);
+    }
     private void FormatAndDisplay(int hours, int minutes, int seconds)
     {
         var hour = Utils.FormatDigit(hours);
