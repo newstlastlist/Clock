@@ -2,10 +2,11 @@ using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class TimerPresenter : AbstractPresenter
 {
-    [SerializeField] private TimerModel _timer;
+    [Inject] private TimerModel _timer;
     [SerializeField] private TimerView _timerView;
 
     [SerializeField] private Button _pauseBtn;
@@ -47,22 +48,6 @@ public class TimerPresenter : AbstractPresenter
         _resetBtn.gameObject.SetActive(true);
         _startResumeBtn.gameObject.SetActive(true);
     }
-
-    // private void OnTimerPaused(bool isPaused)
-    // {
-    //     if (isPaused)
-    //     {
-    //         _startResumeBtn.gameObject.SetActive(true);
-    //
-    //         _pauseBtn.gameObject.SetActive(false);
-    //     }
-    //     else
-    //     {
-    //         _startResumeBtn.gameObject.SetActive(true);
-    //
-    //         _pauseBtn.gameObject.SetActive(false);
-    //     }
-    // }
     private void OnPauseBtnPressed()
     {
         _timer.Pause();

@@ -1,19 +1,25 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 public class ClockApplication : MonoBehaviour
 {
+    [Inject] private ClockModel _clock;
     [SerializeField] private List<Button> _buttons;
-    [SerializeField] private ClockView _clockView;
-
+    private void Start()
+    {
+        _clock.Start();
+    }
+    private void OnDestroy()
+    {
+        _clock.Dispose();
+    }
     public void ShowTimer(Button btn)
     {
         HidePressedBtnEnableAllOtherBtns(btn);
-        _clockView.MoveToBottomPos();
     }
-
     private void HidePressedBtnEnableAllOtherBtns(Button btn)
     {
         btn.gameObject.SetActive(false);

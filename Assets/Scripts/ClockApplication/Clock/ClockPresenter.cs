@@ -1,11 +1,11 @@
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 public class ClockPresenter : AbstractPresenter
 {
+    [Inject] private ClockModel _clock;
     [SerializeField] private AbstractClocklView _clockView;
-    
-    [SerializeField] private ClockModel _clock;
 
     private void Start()
     {

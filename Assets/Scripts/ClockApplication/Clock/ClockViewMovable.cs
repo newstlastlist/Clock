@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ClockView : AbstractClocklView
+public class ClockViewMovable : AbstractClocklView
 {
     [SerializeField] private RectTransform _clockRect;
     [SerializeField] private RectTransform _bottomPos;
@@ -10,7 +10,6 @@ public class ClockView : AbstractClocklView
     {
         MoveToPos(_defaultPos);
     }
-
     public void MoveToBottomPos()
     {
         MoveToPos(_bottomPos);

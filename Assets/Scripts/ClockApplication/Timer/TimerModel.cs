@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UniRx;
-using Unity.VisualScripting;
-using UnityEngine;
 using Zenject;
 
 public class TimerModel : AbstractModel
@@ -22,12 +18,6 @@ public class TimerModel : AbstractModel
     {
         _audioManager = audioManager;
     }
-
-    private void Start()
-    {
-        StopTimer();
-    }
-
     public void StartTimer(TimeSpan duration)
     {
         _isCounting.Value = true;
@@ -53,14 +43,12 @@ public class TimerModel : AbstractModel
                 }
             );
     }
-
     private void OnTimerElapsed()
     {
         _audioManager.Play(AudioManager.Sounds.TimerFinish);
         _timeRemaining.Value = TimeSpan.Zero;
         _isCounting.Value = false;
     }
-
     public IObservable<TimeSpan> GetTimeRemainingAsObservable()
     {
         return _timeRemaining;
@@ -70,20 +58,16 @@ public class TimerModel : AbstractModel
     {
         return _isCounting;
     }
-    
     public void Pause()
     {
         _isPaused = true;
     }
-
-
     public void StopTimer()
     {
         _isPaused = false;
         _timeRemaining.Value = TimeSpan.Zero;
         _timerDisposable?.Dispose();
     }
-
     public void ResetTimer()
     {
     }
