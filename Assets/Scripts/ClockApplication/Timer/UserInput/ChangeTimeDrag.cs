@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ChangeTimeDrag : MonoBehaviour
+public class ChangeTimeDrag : AbstractModelMonoBeh
 {
     [SerializeField] private ReactiveProperty<int> _digit = new ReactiveProperty<int>();
     [SerializeField] private int _maxDigitValue;
@@ -14,6 +14,11 @@ public class ChangeTimeDrag : MonoBehaviour
 
     private Vector3 _dragStartPosition;
     public ReactiveProperty<int> Digit => _digit;
+
+    private void Start()
+    {
+        _digit.AddTo(_disposables);
+    }
 
     public void OnBeginDrag(BaseEventData eventData)
     {

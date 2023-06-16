@@ -42,7 +42,6 @@ public class TimerPresenter : AbstractPresenter
                     OnTimerElapsed();
                 }
             }).AddTo(_disposables);
-
     }
 
     private void InitBtns()
