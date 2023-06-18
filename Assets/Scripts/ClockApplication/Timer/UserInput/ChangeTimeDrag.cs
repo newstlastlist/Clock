@@ -9,7 +9,7 @@ public class ChangeTimeDrag : AbstractModelMonoBeh
     [SerializeField] private ReactiveProperty<int> _digit = new ReactiveProperty<int>();
     [SerializeField] private int _maxDigitValue;
     [SerializeField] private int _minDigitValue = 0;
-    [SerializeField] [Range(5, 50)] private int pixelSensitivity = 5;
+    [SerializeField] [Range(50, 5)] private int pixelSensitivity = 5;
     [SerializeField] private Image _image;
 
     private Vector3 _dragStartPosition;
@@ -31,7 +31,7 @@ public class ChangeTimeDrag : AbstractModelMonoBeh
         var pointerEventData = eventData as PointerEventData;
         var dragDistance = pointerEventData.position.y - _dragStartPosition.y;
 
-        int steps = (int) (dragDistance / pixelSensitivity);
+        int steps = (int) (dragDistance / (pixelSensitivity));
 
         if (steps != 0)
         {
