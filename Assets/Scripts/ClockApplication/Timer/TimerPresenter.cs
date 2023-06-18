@@ -1,38 +1,28 @@
 using System;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
-public class TimerPresenter : AbstractPresenter
+public class TimerPresenter : TimeControlPresenterBase
 {
     [Inject] private TimerModel _timer;
-    [SerializeField] private TimerView _timerView;
 
     [SerializeField] private UserInputPanel _userInputPanel;
-
-    [SerializeField] private Button _pauseBtn;
-    [SerializeField] private Button _startBtn;
-    [SerializeField] private Button _resumeBtn;
-    [SerializeField] private Button _stopBtn;
-
 
     private TimeSpan _timeFromUserInput;
 
     private void Awake()
     {
-        InitBtns();
+        base.AwakeCustom(_timer, OnStartBtnPressedAction, OnStopBtnPressedAction);
     }
 
     private void Start()
     {
         _timer.GetTimeRemainingAsObservable()
-            .Subscribe(time => _timerView.DisplayTimeTimeSpan(time))
+            .Subscribe(time => _view.DisplayTimeTimeSpan(time))
             .AddTo(_disposables);
 
-        _timer.GetHasStartedBoolAsObservable()
-            .Subscribe(isCounting => OnTimerStarted(isCounting))
-            .AddTo(_disposables);
+        base.StartCustom(_timer);
 
         _timer.GetElapsedBoolAsObservable()
             .Subscribe(elapsed =>
@@ -43,17 +33,6 @@ public class TimerPresenter : AbstractPresenter
                 }
             }).AddTo(_disposables);
     }
-
-    private void InitBtns()
-    {
-        StartBtnsGameObjectsState();
-
-        _pauseBtn.onClick.AddListener(() => OnPauseBtnPressed());
-        _startBtn.onClick.AddListener(() => OnStartBtnPressed());
-        _resumeBtn.onClick.AddListener(() => OnResumeBtnPressed());
-        _stopBtn.onClick.AddListener(() => OnStopBtnPressed());
-    }
-
     private void ResetTimeZonesUserInput()
     {
         _userInputPanel.secondsDragZone.ResetDigit();
@@ -61,57 +40,26 @@ public class TimerPresenter : AbstractPresenter
         _userInputPanel.hoursDragZone.ResetDigit();
     }
 
-    private void StartBtnsGameObjectsState()
-    {
-        _pauseBtn.gameObject.SetActive(false);
-        _stopBtn.gameObject.SetActive(false);
-        _resumeBtn.gameObject.SetActive(false);
-
-        _startBtn.gameObject.SetActive(true);
-    }
-
-    private void OnPauseBtnPressed()
-    {
-        _timer.Pause();
-
-        _pauseBtn.gameObject.SetActive(false);
-        _startBtn.gameObject.SetActive(false);
-
-        _resumeBtn.gameObject.SetActive(true);
-    }
-
-    private void OnStartBtnPressed()
+    private void OnStartBtnPressedAction()
     {
         _userInputPanel.SetTimeZonesInteractable(false);
         _userInputPanel.SetGoActive(false);
 
-        _timerView.gameObject.SetActive(true);
+        _view.gameObject.SetActive(true);
 
         _timeFromUserInput = new TimeSpan(_userInputPanel.hoursDragZone.Digit.Value, _userInputPanel.minutesDragZone.Digit.Value,
             _userInputPanel.secondsDragZone.Digit.Value);
 
         _timer.SetTimerDuration(_timeFromUserInput);
-        _timer.StartTimer();
-    }
-
-    private void OnResumeBtnPressed()
-    {
-        _timer.Resume();
-
-        _pauseBtn.gameObject.SetActive(true);
         
-        _resumeBtn.gameObject.SetActive(false);
     }
-
     private void OnTimerElapsed()
     {
         //return all to initial state
-        OnStopBtnPressed();
+        base.OnStopBtnPressed(_timer, OnStopBtnPressedAction);
     }
-    private void OnStopBtnPressed()
+    private void OnStopBtnPressedAction()
     {
-        _timer.StopTimer();
-
         StartBtnsGameObjectsState();
 
         ResetTimeZonesUserInput();
@@ -119,27 +67,7 @@ public class TimerPresenter : AbstractPresenter
         _userInputPanel.SetTimeZonesInteractable(true);
         _userInputPanel.SetGoActive(true);
 
-        _timerView.gameObject.SetActive(false);
+        _view.gameObject.SetActive(false);
     }
-
-    private void OnTimerStarted(bool isCounting)
-    {
-        if (isCounting)
-        {
-            _startBtn.gameObject.SetActive(false);
-            _resumeBtn.gameObject.SetActive(false);
-
-            _pauseBtn.gameObject.SetActive(true);
-            _stopBtn.gameObject.SetActive(true);
-        }
-        else
-        {
-            _startBtn.gameObject.SetActive(true);
-            ;
-
-            _pauseBtn.gameObject.SetActive(false);
-            _stopBtn.gameObject.SetActive(false);
-            _resumeBtn.gameObject.SetActive(false);
-        }
-    }
+    
 }
