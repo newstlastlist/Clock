@@ -59,7 +59,14 @@ public class ClockApplication : MonoBehaviour
 
         _currentEntity = buttonEntityContainer.entity;
     }
-
+    public void ShowApplication()
+    {
+        gameObject.SetActive(true);
+    }
+    public void HideApplication()
+    {
+        gameObject.SetActive(false);
+    }
     public void HideAllTimeEntities()
     {
         foreach (var container in _containers)
